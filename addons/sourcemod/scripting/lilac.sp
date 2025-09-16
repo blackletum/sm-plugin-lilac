@@ -115,7 +115,8 @@ public void OnPluginStart()
 	HookEvent("player_spawn", event_teleported, EventHookMode_Post);
 	HookEvent("player_changename", event_namechange, EventHookMode_Post);
 
-	HookEntityOutput("trigger_teleport", "OnEndTouch", map_teleport);
+	//HookEntityOutput("trigger_teleport", "OnEndTouch", map_teleport);
+	//Commented out since this crashes Pre-Fortress 2 on version 0.7.4
 
 	/* Default ban lengths are -1. (Global ConVar). */
 	for (int i = 0; i < CHEAT_MAX; i++)
