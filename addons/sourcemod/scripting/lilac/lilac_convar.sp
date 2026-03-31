@@ -33,7 +33,6 @@ static ConvarRule convar_rules[] = {
     {"cl_pitchdown", 89, false},
     {"cl_pitchup", 89, false},
     {"cl_thirdperson", 0, false},
-    {"host_limitlocal", 0, false},
     {"host_timescale", 1, false},
     {"mat_fillrate", 0, false},
     {"mat_proxy", 0, false},
@@ -164,7 +163,7 @@ public void query_reply(QueryCookie cookie, int client, ConVarQueryResult result
 	if (icvar[CVAR_LOG]) {
 		lilac_log_setup_client(client);
 		Format(line_buffer, sizeof(line_buffer),
-			"%s was detected and banned for an invalid ConVar (%s).",
+			"%s was detected and kicked for an invalid ConVar (%s).",
 			line_buffer, sDetails);
 
 		lilac_log(true);
@@ -172,8 +171,9 @@ public void query_reply(QueryCookie cookie, int client, ConVarQueryResult result
 		if (icvar[CVAR_LOG_EXTRA])
 			lilac_log_extra(client);
 	}
-	database_log(client, "cvar_invalid", DATABASE_BAN);
+	database_log(client, "cvar_invalid", DATABASE_KICK);
 
+	// Kick the player instead of banning
 	playerinfo_banned_flags[client][CHEAT_CONVAR] = true;
-	lilac_ban_client(client, CHEAT_CONVAR);
+	CreateTimer(5.0, timer_kick, GetClientUserId(client));
 }
